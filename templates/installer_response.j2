@@ -1,0 +1,11 @@
+#Indicate whether the license agreement been accepted
+#----------------------------------------------------
+LICENSE_ACCEPTED=TRUE
+
+#Choose Install Folder
+#---------------------
+USER_INSTALL_DIR={{ ansible_role_ibm_java_sdk_path }}
+
+#Install
+#-------
+-fileOverwrite_{{ ansible_role_ibm_java_sdk_path }}/_uninstall/uninstall.lax=Yes
