@@ -1,37 +1,45 @@
-ansible_role_ibm_java_sdk
+Ansible Role: ansible_role_ibm_java_sdk
 ==============
 
-This role performs the following actions
+Installs/Upgrades IBM Java SDK on the following Operating Systems:
 
-* Installs/Upgrades IBM Java SDK on supported Oprating Systems.
+<ul>
+<li> Enterprise Linux 7/8
+</ul>
 
-Requirements
----------------
+Role Variables
+--------------
 
-This role has been tested on the following Operating Systems.
+| Variable | Required | Default | Comments |
+| -------- | -------- | ------- | -------- |
+| `ansible_role_ibm_java_sdk_path` | No | /opt/ibm/java-x86_64-80 | Install path on target system. |
+| `ansible_role_ibm_java_sdk_version` | No | 8.0-6.20 | Version of IBM Java SDK. |
+| `ansible_role_ibm_java_sdk_installer` | No | files/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.bin | Filename and path to installer file available on Ansible controller. |
 
-* CentOS 7
+Dependencies
+------------
 
+This role has no external dependencies.
 
-Role variables
----------------
+Example Playbook
+----------------
 
-Variables used in the role:
+    - hosts: servers
 
-    ansible_role_ibm_java_sdk_path:  
-    ansible_role_ibm_java_sdk_version:  
-    ansible_role_ibm_java_sdk_installer:
+      vars:
+        ansible_role_ibm_java_sdk_path: /opt/ibm/java-x86_64-80
+        ansible_role_ibm_java_sdk_version: 8.0-6.20
+        ansible_role_ibm_java_sdk_installer: files/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.bin
 
+      roles:
+         - ansible_role_ibm_java_sdk
 
-`ansible_role_ibm_java_sdk_path` Install path on target system, default value is /opt/ibm/java-x86_64-80  
-`ansible_role_ibm_java_sdk_version` Version of IBM Java SDK, default value is 8.0-6.20  
-`ansible_role_ibm_java_sdk_installer` Filename and path to installer file on Ansible controller, default value is files/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.bin.
+License
+-------
 
-Sample configuration
----------------
+MIT
 
-```yaml
-ansible_role_ibm_java_sdk_path: /opt/ibm/java-x86_64-80
-ansible_role_ibm_java_sdk_version: 8.0-6.20
-ansible_role_ibm_java_sdk_installer: files/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.bin
-```
+Author Information
+------------------
+
+Mattias Jonsson

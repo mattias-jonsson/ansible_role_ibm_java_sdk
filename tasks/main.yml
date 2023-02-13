@@ -1,10 +1,11 @@
 ---
 
 - name: Assert that role is executed on a supported Operating System
-  assert:
+  ansible.builtin.assert:
     that:
       - ansible_os_family == 'RedHat'
       - ansible_distribution_major_version == '7' or ansible_distribution_major_version == '8'
     msg: "{{ ansible_distribution }} version {{ ansible_distribution_major_version }} is not a supported Operating System for this role."
 
-- include_tasks: install.yml
+- ansible.builtin.include_tasks:
+    file: install.yml
