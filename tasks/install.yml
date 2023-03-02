@@ -6,16 +6,19 @@
   register: installed_java_bin
 
 - name: Check installed java version.
-  ansible.builtin.shell: '{{ ansible_role_ibm_java_sdk_path }}/jre/bin/java -version 2>&1 | sed -n "s/^Java.* (build \([0-9.]*\) .*/\1/p"'
+  ansible.builtin.shell: >
+    set -o pipefail && \
+      '{{ ansible_role_ibm_java_sdk_path }}/jre/bin/java -version 2>&1 | sed -n "s/^Java.* (build \([0-9.]*\) .*/\1/p"'
   register: installed_java_bin_version
-  changed_when: False
+  changed_when: false
   when: installed_java_bin.stat.exists
 
 
 - name: Install block.
+  when: not installed_java_bin.stat.exists
   block:
     - name: Create installanswers file from template.
-      become: True
+      become: true
       ansible.builtin.template:
         src: installer_response.j2
         dest: "/var/tmp/{{ 1000 | random | hash('md5') }}"
@@ -25,7 +28,7 @@
       register: installanswtemplate
 
     - name: Copy installer to target.
-      become: True
+      become: true
       ansible.builtin.copy:
         src: '{{ ansible_role_ibm_java_sdk_installer }}'
         dest: "/var/tmp/{{ 1000 | random | hash('md5') }}"
@@ -35,11 +38,11 @@
       register: ibmjavainstaller
 
     - name: Install IBM Java SDK.
-      become: True
+      become: true
       ansible.builtin.shell: '{{ ibmjavainstaller.dest }} -i silent -f {{ installanswtemplate.dest }}'
 
     - name: Cleanup temporary files.
-      become: True
+      become: true
       ansible.builtin.file:
         path: '{{ item }}'
         state: absent
@@ -47,24 +50,23 @@
         - "{{ ibmjavainstaller.dest }}"
         - "{{ installanswtemplate.dest }}"
 
-  when: not installed_java_bin.stat.exists
-
 
 - name: Upgrade block.
+  when: >
+    installed_java_bin.stat.exists and (ansible_role_ibm_java_sdk_version | replace('-','.') is version(installed_java_bin_version.stdout | replace('_','.'), operator='gt'))
   block:
-
     - name: Run IBM Java uninstaller.
-      become: True
+      become: true
       ansible.builtin.shell: '{{ ansible_role_ibm_java_sdk_path }}/_uninstall/uninstall -uninstall -i silent'
 
     - name: Remove IBM Java RPM.
-      become: True
+      become: true
       ansible.builtin.yum:
         name: ibm-java-x86_64-sdk
         state: absent
 
     - name: Create installanswers file from template.
-      become: True
+      become: true
       ansible.builtin.template:
         src: installer_response.j2
         dest: "/var/tmp/{{ 1000 | random | hash('md5') }}"
@@ -74,7 +76,7 @@
       register: installanswtemplate
 
     - name: Copy installer to target.
-      become: True
+      become: true
       ansible.builtin.copy:
         src: '{{ ansible_role_ibm_java_sdk_installer }}'
         dest: "/var/tmp/{{ 1000 | random | hash('md5') }}"
@@ -84,16 +86,14 @@
       register: ibmjavainstaller
 
     - name: Install IBM Java SDK.
-      become: True
+      become: true
       ansible.builtin.shell: '{{ ibmjavainstaller.dest }} -i silent -f {{ installanswtemplate.dest }}'
 
     - name: Cleanup temporary files
-      become: True
+      become: true
       ansible.builtin.file:
         path: '{{ item }}'
         state: absent
       with_items:
         - "{{ ibmjavainstaller.dest }}"
         - "{{ installanswtemplate.dest }}"
-
-  when: installed_java_bin.stat.exists and (ansible_role_ibm_java_sdk_version | replace('-','.') is version(installed_java_bin_version.stdout | replace('_','.'), operator='gt'))
