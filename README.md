@@ -14,7 +14,7 @@ Role Variables
 | -------- | -------- | ------- | -------- |
 | `ansible_role_ibm_java_sdk_path` | No | /opt/ibm/java-x86_64-80 | Install path on target system. |
 | `ansible_role_ibm_java_sdk_version` | No | 8.0-6.20 | Version of IBM Java SDK. |
-| `ansible_role_ibm_java_sdk_installer` | No | files/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.bin | Filename and path to installer file available on Ansible controller. |
+| `ansible_role_ibm_java_sdk_installer` | No | files/ibm-java-x86_64-sdk-{{ ansible_role_ibm_java_sdk_version }}.bin | Filename and path to installer file available on Ansible controller. |
 
 Dependencies
 ------------
@@ -29,7 +29,7 @@ Example Playbook
       vars:
         ansible_role_ibm_java_sdk_path: /opt/ibm/java-x86_64-80
         ansible_role_ibm_java_sdk_version: 8.0-6.20
-        ansible_role_ibm_java_sdk_installer: files/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.bin
+        ansible_role_ibm_java_sdk_installer: files/ibm-java-x86_64-sdk-{{ ansible_role_ibm_java_sdk_version }}.bin
 
       roles:
          - ansible_role_ibm_java_sdk
