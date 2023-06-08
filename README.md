@@ -4,7 +4,7 @@ Ansible Role: ansible_role_ibm_java_sdk
 Installs/Upgrades IBM Java SDK on the following Operating Systems:
 
 <ul>
-<li> Enterprise Linux 7/8
+<li> Enterprise Linux 7/8/9
 </ul>
 
 Role Variables

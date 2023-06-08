@@ -5,10 +5,10 @@
     path: "{{ ansible_role_ibm_java_sdk_path }}/jre/bin/java"
   register: installed_java_bin
 
-- name: Check installed java version.
-  ansible.builtin.shell: >
+- name: Check installed java version
+  ansible.builtin.shell: |
     set -o pipefail && \
-      '{{ ansible_role_ibm_java_sdk_path }}/jre/bin/java -version 2>&1 | sed -n "s/^Java.* (build \([0-9.]*\) .*/\1/p"'
+      "{{ ansible_role_ibm_java_sdk_path }}/jre/bin/java" -version 2>&1 | sed -n "s/^Java.* (build \\([0-9.]*\\) .*/\\1/p"
   register: installed_java_bin_version
   changed_when: false
   when: installed_java_bin.stat.exists
