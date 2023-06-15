@@ -27,9 +27,7 @@ Example Playbook
     - hosts: servers
 
       vars:
-        ansible_role_ibm_java_sdk_path: /opt/ibm/java-x86_64-80
         ansible_role_ibm_java_sdk_version: 8.0-6.20
-        ansible_role_ibm_java_sdk_installer: files/ibm-java-x86_64-sdk-{{ ansible_role_ibm_java_sdk_version }}.bin
 
       roles:
          - ansible_role_ibm_java_sdk
