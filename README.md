@@ -20,7 +20,7 @@ The following table lists the configurable variables for this role, their defaul
 | Variable                                | Required | Default Value                                                                                               | Comments                                                                                                  |
 |-----------------------------------------|----------|-------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
 | `ansible_role_ibm_java_sdk_path`        | No       | `/opt/ibm/java-x86_64-80`                                                                                   | The installation path for the IBM Java SDK on the target system. Defined in `vars/main.yml`.             |
-| `ansible_role_ibm_java_sdk_version`     | No       | `8.0-8.20`                                                                                                  | The version of the IBM Java SDK to install. Defaults can be found in `defaults/main.yml`.                |
+| `ansible_role_ibm_java_sdk_version`     | No       | `8.0-8.21`                                                                                                  | The version of the IBM Java SDK to install. Defaults can be found in `defaults/main.yml`.                |
 | `ansible_role_ibm_java_sdk_installer`   | No       | See dynamic value*                                                                                          | URL/Path and filename of the installer. Dynamic defaults in `defaults/main.yml`.   |
 | `ansible_role_ibm_java_sdk_set_default_java` | No   | `false`                                                                                                    | Whether to set IBM Java as the system's default Java interpreter.                                        |
 | `ansible_role_ibm_java_sdk_set_default_java_path` | No   | `/usr/bin/java`                                                                                       | This path will be used by `alternatives` to point to the IBM Java SDK as the default Java interpreter, allowing it to be used when the `java` command is invoked. |
@@ -49,7 +49,8 @@ Example Playbook
 
     - hosts: servers
       vars:
-        ansible_role_ibm_java_sdk_version: "8.0-6.20"
+        ansible_role_ibm_java_sdk_version: "8.0-8.21"
+        ansible_role_ibm_java_sdk_installer: "files/ibm-java-x86_64-sdk-{{ ansible_role_ibm_java_sdk_version }}.{{ 'bin' if ansible_role_ibm_java_sdk_version is version('8.0-8.15', '<') else 'x86_64.rpm' }}"
       roles:
          - ansible_role_ibm_java_sdk
 
