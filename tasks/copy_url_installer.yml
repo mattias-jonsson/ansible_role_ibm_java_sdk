@@ -1,0 +1,8 @@
+---
+- name: Downloading installer to target.
+  ansible.builtin.get_url:
+    url: "{{ ansible_role_ibm_java_sdk_installer }}"
+    dest: "{{ installer_download_dir.path }}/{{ ansible_role_ibm_java_sdk_installer.split('/')[-1] }}"
+    checksum: "sha1:{{ ansible_role_ibm_java_sdk_sha1sums[ansible_role_ibm_java_sdk_installer.split('/')[-1]] }}"
+    mode: '0700'
+  register: ibmjavainstaller

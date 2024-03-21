@@ -1,0 +1,4 @@
+---
+ansible_role_ibm_java_sdk_file_ext: "{{ 'bin' if ansible_role_ibm_java_sdk_version < '8.0-8.15' else 'rpm' }}"
+ansible_role_ibm_java_sdk_gpg_check: "{{ true if ansible_role_ibm_java_sdk_version > '8.0-8.15' else false }}" # Seems like IBM did not sign ibm-java-x86_64-sdk-8.0-8.15.x86_64.rpm ?
+ansible_role_ibm_java_sdk_path: /opt/ibm/java-x86_64-80

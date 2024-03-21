@@ -1,0 +1,14 @@
+---
+- name: Install IBM public GPG key.
+  become: true
+  ansible.builtin.rpm_key:
+    state: present
+    key: '{{ ansible_role_ibm_java_sdk_ibm_gpg_key }}'
+  when: ansible_role_ibm_java_sdk_gpg_check
+
+- name: Install IBM Java SDK from RPM package.
+  become: true
+  ansible.builtin.yum:
+    name: "{{ ibmjavainstaller.dest }}"
+    state: present
+    disable_gpg_check: '{{ not ansible_role_ibm_java_sdk_gpg_check }}'

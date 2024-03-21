@@ -1,9 +1,8 @@
 ---
-
 galaxy_info:
   author: Mattias Jonsson
-  description: An Ansible role that handles installation of IBM Java SDK on supported distributions.
-  min_ansible_version: 2.13.0
+  description: An Ansible role that handles installation of IBM Java 8 SDK on supported distributions.
+  min_ansible_version: 2.16.0
   role_name: ansible_role_ibm_java_sdk
   license: MIT
   platforms:
