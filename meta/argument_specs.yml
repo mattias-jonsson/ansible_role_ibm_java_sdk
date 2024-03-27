@@ -1,0 +1,62 @@
+---
+
+argument_specs:
+  main:
+    short_description: "Manages the installation and upgrade of IBM Java 8 SDK."
+    description:
+      - "Checks for IBM Java 8 SDK installation and current version on the target system."
+      - "Downloads the IBM Java 8 SDK installer from a specified URL or local file."
+      - "Performs the installation or upgrade of the IBM Java 8 SDK."
+      - "Optionally configures IBM Java 8 JRE as the system's default Java interpreter."
+      - "Removes temporary files used during installation."
+    options:
+      ibm_java_sdk_version:
+        description:
+          - The version of the IBM Java SDK to install.
+        required: false
+        default: '8.0-8.21'
+        type: str
+      ibm_java_sdk_set_default_java:
+        description:
+          - If true, sets IBM Java as the system's default Java interpreter.
+        required: false
+        type: bool
+      ibm_java_sdk_set_default_java_path:
+        description:
+          - Path used by alternatives to set the IBM Java SDK as the default Java interpreter.
+        required: false
+        default: '/usr/bin/java'
+        type: str
+      ibm_java_sdk_ibm_gpg_key:
+        description:
+          - "URL to the IBM GPG key for verifying the SDK RPM package. Note: GPG verification is only performed for SDK versions after 8.0-8.15. Earlier versions, are not signed and thus not subject to GPG checks."
+        required: false
+        default: 'https://public.dhe.ibm.com/ibmdl/export/pub/systems/cloud/runtimes/java/certificates/20230520/ibm-java-public-GPGkey-20230520.pgp'
+        type: str
+      ibm_java_sdk_installer:
+        description:
+          - URL or local path to the IBM Java SDK installer package.
+          - This value is dynamically constructed based on the SDK version.
+        required: false
+        type: str
+        default: "https://public.dhe.ibm.com/ibmdl/export/pub/systems/cloud/runtimes/java/{{ ibm_java_sdk_version | replace('-','.') }}/linux/x86_64/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.{{ 'bin' if ibm_java_sdk_version is version('8.0-8.15', '<') else 'x86_64.rpm' }}"
+      ibm_java_sdk_path:
+        description:
+          - Path where the IBM Java SDK is installed on the target system.
+        required: false
+        default: '/opt/ibm/java-x86_64-80'
+        type: str
+      ibm_java_sdk_sha1sums:
+        description:
+          - Map of Java installer filenames to their SHA1 checksums for integrity verification.
+        required: false
+        type: dict
+        default:
+          ibm-java-x86_64-sdk-8.0-6.31.bin: 5a2511794305da488ac6a5ebc4304f1b8c0a5ed6
+          ibm-java-x86_64-sdk-8.0-6.36.bin: f8a75bd8c15ed62c0d541f5c6c43d5650f57bd99
+          ibm-java-x86_64-sdk-8.0-7.0.bin: c46f5a82dc68ecdc8a48615b01eed0af4a373295
+          ibm-java-x86_64-sdk-8.0-8.5.bin: 46212c6026eecbbe88629b8b4bc34dd4d11b947e
+          ibm-java-x86_64-sdk-8.0-8.15.bin: 1d860ba958e1795b32d2bd3abd55aae7204db366
+          ibm-java-x86_64-sdk-8.0-8.15.x86_64.rpm: 22236cd320690ef7b8d644c586c200c66bee3db2
+          ibm-java-x86_64-sdk-8.0-8.20.x86_64.rpm: 48c567ae6267dfe953866a29bcdb4eb691696c1c
+          ibm-java-x86_64-sdk-8.0-8.21.x86_64.rpm: d6ac30569646860c6e3854448b744a32b5950f99
