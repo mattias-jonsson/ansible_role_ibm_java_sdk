@@ -34,9 +34,20 @@ The following table lists the configurable variables for this role, their defaul
 
 Special Variable Notes:
 ------------
-Installer Path and Filename: By default, the path and filename of the installer are determined based on the version of the SDK. For versions prior to 8.0-8.15, a .bin extension is used, while versions 8.0-8.15 and onwards utilize .x86_64.rpm.
-SHA1 Checksums: Provided in defaults/main.yml for verifying the integrity of the downloaded SDK installer."
-File Extension and GPG Check: These are dynamically set based on the Java SDK version, with conditions defined in vars/main.yml.
+- **Installer Path and Filename**:
+  - The default path and filename for the installer are dynamically determined by the SDK version.
+  - For versions **prior to 8.0-8.15**, the installer uses a `.bin` file extension.
+  - For versions **8.0-8.15 and later**, the installer is provided as a `.x86_64.rpm` file.
+
+- **SHA1 Checksums**:
+  - SHA1 checksums are provided within `defaults/main.yml`.
+  - These areused for verifying the integrity of the downloaded SDK installer.
+
+- **File Extension and GPG Check**:
+  - Both the file extension and the GPG verification settings are set dynamically, depending on the Java SDK version.
+  - These settings are defined in `vars/main.yml`.
+
+
 
 Dependencies
 ------------
