@@ -1,8 +1,9 @@
 ---
+
 - name: Copy installer to target.
   ansible.builtin.copy:
-    src: '{{ ansible_role_ibm_java_sdk_installer }}'
+    src: '{{ ibm_java_sdk_installer }}'
     dest: "{{ installer_download_dir.path }}"
-    checksum: "{{ ansible_role_ibm_java_sdk_sha1sums[ansible_role_ibm_java_sdk_installer.split('/')[-1]]}}"
+    checksum: "{{ ibm_java_sdk_sha1sums[ibm_java_sdk_installer.split('/')[-1]] }}"
     mode: '0700'
   register: ibmjavainstaller

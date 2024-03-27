@@ -1,4 +1,5 @@
 ---
+
 - name: Create installanswers file from template.
   ansible.builtin.template:
     src: installer_response.j2
@@ -8,4 +9,4 @@
 
 - name: Install IBM Java SDK from InstallAnywhere installer.
   become: true
-  ansible.builtin.shell: '{{ ibmjavainstaller.dest }} -i silent -f {{ installanswtemplate.dest }}'
+  ansible.builtin.command: '{{ ibmjavainstaller.dest }} -i silent -f {{ installanswtemplate.dest }}'

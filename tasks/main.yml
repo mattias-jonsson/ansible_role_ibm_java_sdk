@@ -1,22 +1,23 @@
 ---
+
 - name: Assert that role is executed on a supported Operating System.
   ansible.builtin.assert:
     that:
       - ansible_os_family == 'RedHat'
       - ansible_distribution_major_version | int >= 7
       - ansible_distribution_major_version | int <= 9
-      - ansible_role_ibm_java_sdk_version is version('8.0', '>=')
-      - ansible_role_ibm_java_sdk_version is version('11.0', '<')
+      - ibm_java_sdk_version is version('8.0', '>=')
+      - ibm_java_sdk_version is version('11.0', '<')
     quiet: true
 
 - name: Include install tasks.
   ansible.builtin.include_tasks:
     file: install.yml
 
-- name: Set Java(TM) SE Runtime Environment (build {{ ansible_role_ibm_java_sdk_version }}) as default Java interpreter.
+- name: "Set IBM Java 8 Runtime Environment as default Java interpreter (build {{ ibm_java_sdk_version }})."
   become: true
   community.general.alternatives:
     name: java
     path: /opt/ibm/java-x86_64-80/jre/bin/java
-    link: "{{ ansible_role_ibm_java_sdk_set_default_java_path }}"
-  when: ansible_role_ibm_java_sdk_set_default_java
+    link: "{{ ibm_java_sdk_set_default_java_path }}"
+  when: ibm_java_sdk_set_default_java

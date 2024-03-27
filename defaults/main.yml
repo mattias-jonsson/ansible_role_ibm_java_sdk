@@ -1,11 +1,13 @@
 ---
-ansible_role_ibm_java_sdk_version: 8.0-8.21
-ansible_role_ibm_java_sdk_set_default_java: false
-ansible_role_ibm_java_sdk_set_default_java_path: '/usr/bin/java'
-ansible_role_ibm_java_sdk_ibm_gpg_key: https://public.dhe.ibm.com/ibmdl/export/pub/systems/cloud/runtimes/java/certificates/20230520/ibm-java-public-GPGkey-20230520.pgp
-ansible_role_ibm_java_sdk_installer: https://public.dhe.ibm.com/ibmdl/export/pub/systems/cloud/runtimes/java/{{ ansible_role_ibm_java_sdk_version | replace('-','.') }}/linux/x86_64/ibm-java-x86_64-sdk-{{ ansible_role_ibm_java_sdk_version }}.{{ 'bin' if ansible_role_ibm_java_sdk_version is version('8.0-8.15', '<') else 'x86_64.rpm' }}
-#ansible_role_ibm_java_sdk_installer: files/ibm-java-x86_64-sdk-{{ ansible_role_ibm_java_sdk_version }}.{{ 'bin' if ansible_role_ibm_java_sdk_version is version('8.0-8.15', '<') else 'x86_64.rpm' }}
-ansible_role_ibm_java_sdk_sha1sums:
+
+ibm_java_sdk_version: 8.0-8.21
+ibm_java_sdk_set_default_java: false
+ibm_java_sdk_set_default_java_path: '/usr/bin/java'
+ibm_java_sdk_ibm_gpg_key: https://public.dhe.ibm.com/ibmdl/export/pub/systems/cloud/runtimes/java/certificates/20230520/ibm-java-public-GPGkey-20230520.pgp
+ibm_java_sdk_installer: https://public.dhe.ibm.com/ibmdl/export/pub/systems/cloud/runtimes/java/{{ ibm_java_sdk_version | replace('-', '.') }}/linux/x86_64/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.{{ 'bin' if ibm_java_sdk_version is version('8.0-8.15', '<') else 'x86_64.rpm' }}
+# ibm_java_sdk_installer: files/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.{{ 'bin' if ibm_java_sdk_version is version('8.0-8.15', '<') else 'x86_64.rpm' }}
+ibm_java_sdk_path: /opt/ibm/java-x86_64-80
+ibm_java_sdk_sha1sums:
   ibm-java-x86_64-sdk-8.0-6.31.bin: 5a2511794305da488ac6a5ebc4304f1b8c0a5ed6
   ibm-java-x86_64-sdk-8.0-6.36.bin: f8a75bd8c15ed62c0d541f5c6c43d5650f57bd99
   ibm-java-x86_64-sdk-8.0-7.0.bin: c46f5a82dc68ecdc8a48615b01eed0af4a373295

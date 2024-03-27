@@ -1,13 +1,15 @@
 ---
+
 - name: Check if java binary exists.
   ansible.builtin.stat:
-    path: "{{ ansible_role_ibm_java_sdk_path }}/jre/bin/java"
+    path: "{{ ibm_java_sdk_path }}/jre/bin/java"
   register: installed_java_bin
+
 
 - name: Check installed java version.
   ansible.builtin.shell: |
     set -o pipefail && \
-      "{{ ansible_role_ibm_java_sdk_path }}/jre/bin/java" -version 2>&1 | sed -n "s/^Java.* (build \\([0-9.]*\\) .*/\\1/p"
+      "{{ ibm_java_sdk_path }}/jre/bin/java" -version 2>&1 | sed -n "s/^Java.* (build \\([0-9.]*\\) .*/\\1/p"
   register: installed_java_bin_version
   changed_when: false
   when: installed_java_bin.stat.exists
@@ -16,17 +18,18 @@
 - name: Install/Upgrade block.
   when: >
     not installed_java_bin.stat.exists or
-    installed_java_bin.stat.exists and (ansible_role_ibm_java_sdk_version | replace('-','.') is version(installed_java_bin_version.stdout | replace('_','.'), operator='gt'))
+    installed_java_bin.stat.exists and (ibm_java_sdk_version | replace('-','.') is version(installed_java_bin_version.stdout | replace('_','.'), operator='gt'))
   block:
     - name: Check if uninstaller exists.
       ansible.builtin.stat:
-        path: "{{ ansible_role_ibm_java_sdk_path }}/_uninstall/uninstall"
+        path: "{{ ibm_java_sdk_path }}/_uninstall/uninstall"
       register: installed_java_bin_uninstaller
       when: installed_java_bin.stat.exists
+      changed_when: false
 
     - name: Run IBM Java uninstaller.
       become: true
-      ansible.builtin.shell: '{{ ansible_role_ibm_java_sdk_path }}/_uninstall/uninstall -uninstall -i silent'
+      ansible.builtin.command: '{{ ibm_java_sdk_path }}/_uninstall/uninstall -uninstall -i silent'
       when:
         - installed_java_bin_uninstaller.stat.exists | default(false)
         - installed_java_bin_uninstaller.stat.executable | default(false)
@@ -39,11 +42,11 @@
 
     - name: Include tasks to download/copy installer files.
       ansible.builtin.include_tasks:
-        file: "copy_{{ 'url_' if ansible_role_ibm_java_sdk_installer is ansible.builtin.url else 'file_' }}installer.yml"
+        file: "copy_{{ 'url_' if ibm_java_sdk_installer is ansible.builtin.url else 'file_' }}installer.yml"
 
     - name: Include install tasks.
       ansible.builtin.include_tasks:
-        file: "{{ 'install_bin.yml' if ansible_role_ibm_java_sdk_installer.split('/')[-1].endswith('.bin') else 'install_rpm.yml' }}"
+        file: "{{ 'install_bin.yml' if ibm_java_sdk_installer.split('/')[-1].endswith('.bin') else 'install_rpm.yml' }}"
 
     - name: Cleanup temporary files.
       become: true
