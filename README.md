@@ -1,4 +1,4 @@
-Ansible Role: ansible_role_ibm_java_sdk
+Ansible Role: ibm_java_sdk
 ==============
 
 Installs/Upgrades IBM Java SDK version 8 on the following Operating Systems:
@@ -10,7 +10,11 @@ Installs/Upgrades IBM Java SDK version 8 on the following Operating Systems:
 Requirements
 ------------
 
-This role depends on the `community.general` Ansible collection.
+This role requires the `community.general` Ansible collection. If not already installed, you can install it using the following command:
+
+```shell
+ansible-galaxy collection install community.general
+```
 
 Role Variables
 --------------
@@ -19,25 +23,20 @@ The following table lists the configurable variables for this role, their defaul
 
 | Variable                                | Required | Default Value                                                                                               | Comments                                                                                                  |
 |-----------------------------------------|----------|-------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| `ansible_role_ibm_java_sdk_path`        | No       | `/opt/ibm/java-x86_64-80`                                                                                   | The installation path for the IBM Java SDK on the target system. Defined in `vars/main.yml`.             |
-| `ansible_role_ibm_java_sdk_version`     | No       | `8.0-8.21`                                                                                                  | The version of the IBM Java SDK to install. Defaults can be found in `defaults/main.yml`.                |
-| `ansible_role_ibm_java_sdk_installer`   | No       | See dynamic value*                                                                                          | URL/Path and filename of the installer. Dynamic defaults in `defaults/main.yml`.   |
-| `ansible_role_ibm_java_sdk_set_default_java` | No   | `false`                                                                                                    | Whether to set IBM Java as the system's default Java interpreter.                                        |
-| `ansible_role_ibm_java_sdk_set_default_java_path` | No   | `/usr/bin/java`                                                                                       | This path will be used by `alternatives` to point to the IBM Java SDK as the default Java interpreter, allowing it to be used when the `java` command is invoked. |
-| `ansible_role_ibm_java_sdk_sha1sums`    | No       | See SHA1 checksums below**                                                                                  | Map of Java installers to their SHA1 checksums. Ensure you update this with newer versions as necessary. |
-| `ansible_role_ibm_java_sdk_file_ext`    | No       | See dynamic value***                                                                                        | File extension for the installer, dependent on the SDK version. Defined in `vars/main.yml`.              |
-| `ansible_role_ibm_java_sdk_gpg_check`   | No       | See dynamic value****                                                                                       | Whether to enable GPG check for the RPM package, dependent on the SDK version. Defined in `vars/main.yml`.|
+| `ibm_java_sdk_file_ext`    | No       | Dynamic based on version                                                                                     | File extension for the installer, determined by the SDK version. Defined in `vars/main.yml`.              |
+| `ibm_java_sdk_gpg_check`   | No       | Dynamic based on version                                                                                  | Whether to perform a GPG check on the RPM package, dependent on the SDK version. Defined in `vars/main.yml`.|
+| `ibm_java_sdk_installer`   | No       | Dynamic based on version                                                                                         | URL or local path, including filename, of the installer.  |
+| `ibm_java_sdk_path`        | No       | `/opt/ibm/java-x86_64-80`                                                                                   | Path where the IBM Java SDK is installed on the target system.           |
+| `ibm_java_sdk_set_default_java_path` | No   | `/usr/bin/java`                                                                                       | Path used by alternatives to set the IBM Java SDK as the default Java interpreter. |
+| `ibm_java_sdk_set_default_java` | No   | `false`                                                                                                    | If true, sets IBM Java as the system's default Java interpreter.                                        |
+| `ibm_java_sdk_sha1sums`    | No       | SHA1 checksums listed below                                                                               | Map of Java installer filenames to their SHA1 checksums for integrity verification. |
+| `ibm_java_sdk_version`     | No       | `8.0-8.21`                                                                                                  | The version of the IBM Java SDK to install.              |
 
-*Default installer path and filename are derived from the SDK version, switching between `.bin` for versions before `8.0-8.15` and `.x86_64.rpm` for `8.0-8.15` and above.
-
-**Default SHA1 checksums in `defaults/main.yml` for verifying the integrity of downloaded SDK installers:
-- `ibm-java-x86_64-sdk-8.0-6.31.bin`: `5a2511794305da488ac6a5ebc4304f1b8c0a5ed6`
-- ... (list continues with other versions and their checksums)
-
-***The file extension for the installer is dynamically set based on the Java SDK version.
-
-****GPG check is enabled or disabled based on the SDK version, with conditions defined in `vars/main.yml`.
-
+Special Variable Notes:
+------------
+Installer Path and Filename: By default, the path and filename of the installer are determined based on the version of the SDK. For versions prior to 8.0-8.15, a .bin extension is used, while versions 8.0-8.15 and onwards utilize .x86_64.rpm.
+SHA1 Checksums: Provided in defaults/main.yml for verifying the integrity of the downloaded SDK installer."
+File Extension and GPG Check: These are dynamically set based on the Java SDK version, with conditions defined in vars/main.yml.
 
 Dependencies
 ------------
@@ -47,12 +46,14 @@ This role has no external dependencies.
 Example Playbook
 ----------------
 
-    - hosts: servers
-      vars:
-        ansible_role_ibm_java_sdk_version: "8.0-8.21"
-        ansible_role_ibm_java_sdk_installer: "files/ibm-java-x86_64-sdk-{{ ansible_role_ibm_java_sdk_version }}.{{ 'bin' if ansible_role_ibm_java_sdk_version is version('8.0-8.15', '<') else 'x86_64.rpm' }}"
-      roles:
-         - ansible_role_ibm_java_sdk
+```shell
+- hosts: servers
+  vars:
+    ibm_java_sdk_version: "8.0-8.21"
+    ibm_java_sdk_installer: "files/ibm-java-x86_64-sdk-{{ ibm_java_sdk_version }}.{{ 'bin' if ibm_java_sdk_version is version('8.0-8.15', '<') else 'x86_64.rpm' }}"
+  roles:
+      - ibm_java_sdk
+```
 
 License
 -------
